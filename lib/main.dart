@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
           centerTitle: true,
-        ),
-        iconTheme: const IconThemeData().copyWith(
-          color: primaryColor,
+          iconTheme: const IconThemeData(
+            color: primaryColor,
+          ),
         ),
       ),
       routes: {
