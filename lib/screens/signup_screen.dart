@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:twitch_clone/models/user_model.dart';
+import 'package:twitch_clone/providers/user_provider.dart';
+import 'package:twitch_clone/resources/auth_method.dart';
+import 'package:twitch_clone/screens/home_screen.dart';
 import 'package:twitch_clone/wedgets/custom_button.dart';
 import 'package:twitch_clone/wedgets/custom_textfield.dart';
 
@@ -14,6 +19,22 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+
+  final AuthMethods _authMethods = AuthMethods();
+
+  void signUpUser() async {
+    UserModel? res = await _authMethods.signUpUser(
+      context,
+      _emailController.text,
+      _usernameController.text,
+      _passwordController.text,
+    );
+    if (!mounted) return;
+    if (res != null) {
+      Provider.of<UserProvider>(context, listen: false).setUser(res);
+      Navigator.pushNamed(context, HomeScreen.routeName);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +88,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: CustomTextField(
                   controller: _passwordController,
+                  obscureText: true,
                 ),
               ),
               const SizedBox(height: 20),
               CustomButton(
                 text: "Sign up",
-                onTap: () {},
+                onTap: signUpUser,
               )
             ],
           ),

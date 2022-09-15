@@ -1,12 +1,34 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:twitch_clone/providers/user_provider.dart';
 import 'package:twitch_clone/screens/login_screen.dart';
 import 'package:twitch_clone/screens/onboarding_screen.dart';
 import 'package:twitch_clone/screens/signup_screen.dart';
 import 'package:twitch_clone/utils/colors.dart';
 import 'package:twitch_clone/utils/constants.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // if (kIsWeb) {
+  //   await Firebase.initializeApp(
+  //     options: const FirebaseOptions(
+  //       apiKey: "AIzaSyBizS1MugnEw6op4xiqvXWC1aw6Y7Va4i4",
+  //       authDomain: "twitch-clone-tutorial.firebaseapp.com",
+  //       projectId: "twitch-clone-tutorial",
+  //       storageBucket: "twitch-clone-tutorial.appspot.com",
+  //       messagingSenderId: "238752454769",
+  //       appId: "1:238752454769:web:c7d31e54b7fce341d563d0",
+  //     ),
+  //   );
+  // } else {
+  await Firebase.initializeApp();
+  // }
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (_) => UserProvider(),
+    ),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
